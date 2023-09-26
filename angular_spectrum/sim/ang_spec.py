@@ -1,7 +1,7 @@
 from angular_spectrum.sim.layer import Layer
 import torch
 
-from angular_spectrum.sim.porpagate import propagate
+from angular_spectrum.sim.propagate import propagate
 
 
 def diffract(X, pixel, z, wl, layers: list(Layer)=[]):
