@@ -2,14 +2,14 @@ import torch
 import torch.fft as fft
 from util.const import n0
 
-def propagate(X, pixel, wl, z, n=lambda wl: n0):
+def propagate(X, grid, wl, z, n=lambda wl: n0):
     N = X.shape[0]
     assert N == X.shape[1], 'support only square input for now'
     
     Xk = fft.fft2(X)
     
-    kx = fft.fftfreq(N, d=pixel)
-    ky = fft.fftfreq(N, d=pixel)
+    kx = fft.fftfreq(N, d=grid)
+    ky = fft.fftfreq(N, d=grid)
     kx, ky = kx.to(dtype=X.dtype), ky.to(dtype=X.dtype)
     kx, ky = kx.to(device=X.device), ky.to(device=X.device)
 
