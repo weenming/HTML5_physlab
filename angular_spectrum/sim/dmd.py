@@ -1,6 +1,8 @@
 from torch import nn
 import torch
 
+from angular_spectrum.util.resolution import change_resolution
+
 class DMD(nn.Module):
     def __init__(self, grid_num=None):
         '''
@@ -14,7 +16,7 @@ class DMD(nn.Module):
         self.grid_num = grid_num
 
     def forward(self, X):
-        if grid_num is not None:
+        if self.grid_num is not None:
             X = change_resolution(
                 X, self.pixel, self.pixel, self.grid, self.grid
             )
