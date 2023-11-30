@@ -51,7 +51,7 @@ def get_double_slit(halfn):
     return X
 
 def get_obj(get_x=get_circle):
-    n = 1000 # <~10000
+    n = 256 # <~10000
     halfn = n // 2
     X = get_x(halfn)
 
@@ -86,19 +86,6 @@ def show_mat(X, pixel, show_ratio=1):
 
     return
 
-def perform_simulation(z, wl, grid):
-    X = prop.propagate(get_obj(get_double_slit), grid, wl, z)
-
-    show_mat(get_obj(get_double_slit), grid, show_ratio=1)
-    plt.savefig(os.path.join(app.static_folder, 'start_plot.png'))
-    plt.close()
-
-    show_mat(X, grid, show_ratio=1)
-    plt.savefig(os.path.join(app.static_folder, 'simulation_plot.png'))
-    plt.close()
-
-    return 'static/simulation_plot.png'
-
 
 @app.route('/')
 def index():
@@ -106,16 +93,38 @@ def index():
 
 @app.route('/run_simulation', methods=['POST'])
 def run_simulation():
-    # Get input parameters from the request
+
     data = request.get_json()
     z = float(data.get('z'))
     wl = float(data.get('wl'))
     grid = float(data.get('grid'))
+    matrix = torch.Tensor(np.array(data.get('matrix')))
+    types = data.get('types')
 
-    # Perform the optical simulation and get the path of the saved plot
-    image_path = perform_simulation(z, wl, grid)
+    all_elements_are_zero = all(all(element == 0 for element in row) for row in matrix)
+    if all_elements_are_zero:
+        if types == "Circle":
+            matrix = get_obj(get_circle)
+        if types == "Double slit":
+            matrix = get_obj(get_double_slit)
+        if types == "Square":
+            matrix = get_obj(get_square)
 
-    # Return the path of the saved image to the web page
+    
+    X = prop.propagate(matrix, grid, wl, z)
+    #X = prop.propagate(get_obj(get_double_slit), grid, wl, z)
+
+    #show_mat(get_obj(get_double_slit), grid)
+    show_mat(matrix, grid)
+    plt.savefig(os.path.join(app.static_folder, 'start_plot.png'))
+    plt.close()
+
+    show_mat(X, grid)
+    plt.savefig(os.path.join(app.static_folder, 'simulation_plot.png'))
+    plt.close()
+
+    image_path = ""
+
     return jsonify({'image_path': image_path})
 
 @app.route('/static/<filename>')

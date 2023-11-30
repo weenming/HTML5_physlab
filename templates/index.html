@@ -1,32 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optical Simulation</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #drawContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
+
 <body>
+
     <h1>Optical Simulation</h1>
+    <p>
+        This is an optical simulaiton web page using padding method.
+    </p>
+    <p>
+        You can set the initial condition with given parameters, 
+        or you can just draw on the canvas below.
+    </p>
+    <p>
+        If the canvas is empty, the default initial condition is given by Pre-set Input.
+    </p>
+
     <form id="simulationForm">
-        <!-- Input fields for simulation parameters -->
-        <p><label for="z">Distance :</label>
-        <input type="text" id="z" name="z" required></p>
 
-        <p></p><label for="grid">Grid :</label>
-        <input type="text" id="grid" name="grid" required></p>
+        <label for="z">Distance/&mu;m  :</label>
+        <input type="text" id="z" name="z" value="20000" required>
 
-        <p></p><label for="wl">Wave Length :</label>
-        <input type="text" id="wl" name="wl" required></p>
+        <label for="grid">Grid/&mu;m :</label>
+        <input type="text" id="grid" name="grid" value="1" required>
 
-        <!-- Add more input fields as needed -->
+        <label for="wl">Wave Length/&mu;m :</label>
+        <input type="text" id="wl" name="wl" value="0.5" required>
 
-        <button type="button" onclick="runSimulation()">Run Simulation</button>
     </form>
 
-    <!-- <div id="simulationResult"></div>
-    <img id="simulationImage"> -->
+    <h3>Pre-set Input</h3>
 
-    <div id="simulationResult">
+    <select id="types">
+        <option value="Double slit">Double slit</option>
+        <option value="Circle">Circle</option>
+        <option value="Square">Square</option>
+    </select>
+    
+    <h3>Custom Input</h3>
+
+    <div id="drawContainer">
+    <canvas id="drawCanvas" width="256" height="256"></canvas>
+    <p>
+        <button type="button" onclick="runSimulation()">Run Simulation</button>
+        <button onclick="clearCanvas()">Clear Canvas</button>
+        <button onclick="toggleEraser()">Toggle Eraser</button>
+    </p>
+    </div>
+
+    <div id="InitialCondition" style="float: left; width: 50%;">
+        <p>Initial Condition: </p>
+        <img id="startImage">
+    </div>
+
+    <div id="simulationResult" style="float: left; width: 50%;">
         <p>Simulation Result: </p>
         <img id="simulationImage">
     </div>

@@ -1,3 +1,9 @@
+To run this project, try
+
+```shell
+bash run.sh
+```
+
 This is a repo for the HTML5 project in the physics experiment course
 
 # 网站功能
