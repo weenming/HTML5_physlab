@@ -7,10 +7,10 @@ function runSimulation() {
     let imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
     let matrix = [];
 
-    for (let i = 0; i < canvas.height / 2; i++) {
+    for (let i = 0; i < canvas.height; i++) {
         let row = [];
-        for (let j = 0; j < canvas.width / 2; j++) {
-            let index = ((i * canvas.width) + j) * 8;
+        for (let j = 0; j < canvas.width; j++) {
+            let index = ((i * canvas.width) + j) * 4;
             let isBlack = imageData[index] === 0;
             row.push(isBlack ? 0 : 1);
         }
@@ -107,4 +107,15 @@ function clearCanvas() {
 
 function toggleEraser() {
     isErasing = !isErasing;
+}
+
+function changeCanvasSize() {
+    let newSideLength = document.getElementById('canvasSlider').value;
+
+    canvas.width = newSideLength;
+    canvas.height = newSideLength;
+
+    clearCanvas();
+
+    document.getElementById('sliderValue').textContent = "Canvas width:"+newSideLength;
 }

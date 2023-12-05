@@ -15,6 +15,12 @@
             flex-direction: column;
             align-items: center;
         }
+        input[type=range] {
+        appearance: slider-horizontal;
+        width: 180px;
+        height: 15px;
+        padding: 0 5px;
+        }
     </style>
 </head>
 
@@ -34,13 +40,13 @@
 
     <form id="simulationForm">
 
-        <label for="z">Distance/&mu;m  :</label>
+        <label for="z">Distance(&mu;m)  :</label>
         <input type="text" id="z" name="z" value="20000" required>
 
-        <label for="grid">Grid/&mu;m :</label>
+        <label for="grid">Grid(&mu;m) :</label>
         <input type="text" id="grid" name="grid" value="1" required>
 
-        <label for="wl">Wave Length/&mu;m :</label>
+        <label for="wl">Wave Length(/&mu;m) :</label>
         <input type="text" id="wl" name="wl" value="0.5" required>
 
     </form>
@@ -55,13 +61,18 @@
     
     <h3>Custom Input</h3>
 
-    <div id="drawContainer">
+    <div id="drawContainer" class="container">
+    <input type="range" id="canvasSlider" min="50" max="500" step="1" value="256" oninput="changeCanvasSize()">
+    <span id="sliderValue">Canvas width: 256</span>
     <canvas id="drawCanvas" width="256" height="256"></canvas>
+    
     <p>
         <button type="button" onclick="runSimulation()">Run Simulation</button>
         <button onclick="clearCanvas()">Clear Canvas</button>
         <button onclick="toggleEraser()">Toggle Eraser</button>
+        
     </p>
+
     </div>
 
     <div id="InitialCondition" style="float: left; width: 50%;">
