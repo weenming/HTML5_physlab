@@ -12,7 +12,7 @@
 
         #drawContainer {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
         }
         input[type=range] {
@@ -26,67 +26,72 @@
 
 <body>
 
-    <h1>Optical Simulation</h1>
-    <p>
-        This is an optical simulaiton web page using padding method.
+<h1>Optical Simulation</h1>
+<div style="margin-right: auto;margin-left: auto;width:50%"> 
+    <p >
+        This is an optical simulaiton web page using Angular Spectrum method.
     </p>
     <p>
-        You can set the initial condition with given parameters, 
-        or you can just draw on the canvas below.
+        You can set the initial condition with given parameters, <br>
+        or you can draw on the input canvas (left).<br>
+        Simulation result is shown on the result canvas (right). <br>
+        Each pixel of the canvas corresponds to 1 &mu;m.<br>
+        The default input is double slit with d = 20 &mu;m.<br>
     </p>
-    <p>
-        If the canvas is empty, the default initial condition is given by Pre-set Input.
+    <p >
+        You can also measure diffraction intensity with measure line. <br>
+        Create a measure line by clicking two points on the result canvas, <br>
+        The intensity distribution on the line is shown on the Intensity Measurement canvas below.
     </p>
+</div>
 
     <form id="simulationForm">
 
         <label for="z">Distance(&mu;m)  :</label>
-        <input type="text" id="z" name="z" value="20000" required>
+        <input type="text" id="z" name="z" value="20000" onchange="runSimulation()" required>
 
         <label for="grid">Grid(&mu;m) :</label>
-        <input type="text" id="grid" name="grid" value="1" required>
+        <input type="text" id="grid" name="grid" value="1" onchange="runSimulation()" required>
 
-        <label for="wl">Wave Length(/&mu;m) :</label>
-        <input type="text" id="wl" name="wl" value="0.5" required>
+        <label for="wl">Wave Length(nm) :</label>
+        <input type="text" id="wl" name="wl" value="500" onchange="runSimulation()" required>
 
     </form>
 
     <h3>Pre-set Input</h3>
 
-    <select id="types">
+    <select id="types" onchange="preset()">
         <option value="Double slit">Double slit</option>
         <option value="Circle">Circle</option>
         <option value="Square">Square</option>
     </select>
     
     <h3>Custom Input</h3>
-
-    <div id="drawContainer" class="container">
-    <input type="range" id="canvasSlider" min="50" max="500" step="1" value="256" oninput="changeCanvasSize()">
     <span id="sliderValue">Canvas width: 256</span>
-    <canvas id="drawCanvas" width="256" height="256"></canvas>
+    <input type="range" id="canvasSlider" min="50" max="500" step="1" value="256" oninput="changeCanvasSize()">
     
+    <div id="drawContainer" class="container">
+    <div style="float: left; width: 50%;" class="box"><canvas id="drawCanvas" width="256" height="256" style="float: right"></canvas></div>
+    &ThinSpace;
+    <div style="float: left; width: 50%;" class="box"><canvas id="resultCanvas" width="256" height="256" style="float: left"></canvas></div>
+    </div>
     <p>
-        <button type="button" onclick="runSimulation()">Run Simulation</button>
-        <button onclick="clearCanvas()">Clear Canvas</button>
-        <button onclick="toggleEraser()">Toggle Eraser</button>
-        
+        <span>Intensity Measurement</span>
+        <div style="float: center; width: 100%;" class="box"><canvas id="plotCanvas" width="522" height="256" style="float: center"></canvas></div>
     </p>
-
-    </div>
-
-    <div id="InitialCondition" style="float: left; width: 50%;">
-        <p>Initial Condition: </p>
-        <img id="startImage">
-    </div>
-
-    <div id="simulationResult" style="float: left; width: 50%;">
-        <p>Simulation Result: </p>
-        <img id="simulationImage">
-    </div>
+    <p>
+        <button onclick="runSimulation()">Run Simulation</button>
+        <button onclick="clearCanvas()">Clear Canvas</button>
+        <button id="Eraser" onclick="toggleEraser()">Eraser: off</button>
+        <button id="Measurement" onclick="toggleMeasurement()">Measurement: on</button>
+    </p>
+    <p>
+        <span id="brushValue">Brush Width: 2</span>
+        <input type="range" id="brushSlider" min="1" max="100" step="1" value="2" oninput="changeBrushSize()">
+    </p>
     
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 
 </body>
 </html>
