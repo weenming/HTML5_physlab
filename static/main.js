@@ -278,7 +278,10 @@ function runSimulation() {
 
         // Get pixels on the line
         getPoints(lineEnds);
+
         // Plot on the canvas_p
+        let newSideLength = document.getElementById('canvasSlider').value;
+        ratio = newSideLength/getMax(result)
         createPlot(lineEnds, points, result, ratio);
 
         
