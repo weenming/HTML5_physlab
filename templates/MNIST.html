@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optical Simulation</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #drawContainer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        input[type=range] {
+        appearance: slider-horizontal;
+        width: 180px;
+        height: 15px;
+        padding: 0 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Optical Simulation</h1>
+<div style="margin-right: auto;margin-left: auto;width:50%"> 
+    <p >
+        This is a simulation of Diffraction Neural Network. You can write a number (0-9) on the left canvas
+        and the result will be shown on the right canvas.
+    </p>
+    <p><a href="\">Go back</a></p>
+</div>
+    
+    <div id="drawContainer" class="container">
+    <div style="float: left; width: 50%;" class="box"><canvas id="number" width="280" height="280" style="float: right"></canvas></div>
+    &ThinSpace;
+    <div style="float: left; width: 50%;" class="box"><canvas id="result" width="280" height="280" style="float: left"></canvas></div>
+    </div>
+    <p>
+        <button onclick="clearCanvas()">Clear Canvas</button>
+        <button id="Eraser" onclick="toggleEraser()">Eraser: off</button>
+    </p>
+
+
+    <script src="{{ url_for('static', filename='MNIST.js') }}"></script>
+
+</body>
+</html>

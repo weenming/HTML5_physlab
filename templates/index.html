@@ -32,16 +32,21 @@
         This is an optical simulaiton web page using Angular Spectrum method.
     </p>
     <p>
-        You can set the initial condition with given parameters, <br>
-        or you can draw on the input canvas (left).<br>
-        Simulation result is shown on the result canvas (right). <br>
-        Each pixel of the canvas corresponds to 1 &mu;m.<br>
-        The default input is double slit with d = 20 &mu;m.<br>
+        You can set the initial condition with given parameters, 
+        or you can draw on the input canvas (left).
+        Simulation result is shown on the result canvas (right). 
+        Each pixel of the canvas corresponds to 1 &mu;m.
+        The default input is double slit with d = 20 &mu;m.
     </p>
     <p >
-        You can also measure diffraction intensity with measure line. <br>
-        Create a measure line by clicking two points on the result canvas, <br>
+        You can also measure diffraction intensity with measure line. 
+        Create a measure line by clicking two points on the result canvas, 
         The intensity distribution on the line is shown on the Intensity Measurement canvas below.
+    </p>
+    <p>
+        We also created a Diffraction Neural Network with this simulation. 
+        We trained a hand-written digit classification model, you can see it <a href="/mnist">here</a>.
+
     </p>
 </div>
 
@@ -84,6 +89,8 @@
         <button onclick="clearCanvas()">Clear Canvas</button>
         <button id="Eraser" onclick="toggleEraser()">Eraser: off</button>
         <button id="Measurement" onclick="toggleMeasurement()">Measurement: on</button>
+        <button id="saveResultButton">Save Measurement as CSV</button>
+
     </p>
     <p>
         <span id="brushValue">Brush Width: 2</span>

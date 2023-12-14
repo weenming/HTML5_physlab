@@ -210,6 +210,7 @@ function createPlot(ends, points, result, y_ratio){
     for (let i = 0; i < points.length; i++){
         plot.push({x : Math.abs(dotMul(e, substract(points[i],ends[0]))), y : result[points[i].y][points[i].x]});
     }
+    console.log(plot)
     context_p.fillStyle = 'black';
     context_p.fillRect(0, 0, canvas_p.width, canvas_p.height);
     let x_ratio = canvas_p.width/plot[plot.length-1].x;
@@ -221,6 +222,45 @@ function createPlot(ends, points, result, y_ratio){
     }
     context_p.stroke();
 }
+
+// Save measurement
+function convertToCSV(resultData) {
+    let csvContent = "";
+
+    // Add CSV header if needed
+    csvContent += "x,y\r\n";
+
+    resultData.forEach(function (item) {
+        let row = [item.x, item.y];
+        let rowString = row.join(",");
+        csvContent += rowString + "\r\n";
+    });
+
+    return csvContent;
+}
+
+document.getElementById("saveResultButton").addEventListener("click", function () {
+    // Generate the CSV content
+    let csvData = convertToCSV(plot);
+
+    // Create a blob with the CSV data
+    let blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+
+    // Create a download link
+    let link = document.createElement("a");
+    if (link.download !== undefined) {
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "result.csv");
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert("Your browser does not support the download feature. Please try a different browser.");
+    }
+});
+
 
 function getMax(a){
     return Math.max(...a.map(e => Array.isArray(e) ? getMax(e) : e));
@@ -284,7 +324,6 @@ function runSimulation() {
         ratio = newSideLength/getMax(result)
         createPlot(lineEnds, points, result, ratio);
 
-        
     }) 
     // Log error message
     .catch((error) => {
