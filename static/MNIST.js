@@ -50,11 +50,11 @@ function draw(e) {
     context_number.lineTo(x, y);
     context_number.stroke();
     convertCanvasToMatrix(context_number);
-    console.log(matrix);
 }
 
 function stopDrawing() {
     isDrawing = false;
+    Recognize();
 }
 
 function toggleEraser() {
@@ -98,27 +98,26 @@ function Recognize() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            z: z,
-            wl: wl,
-            grid: grid,
             matrix: matrix,
-            types: types,
         }),
     })
     // Reveive response
     .then(response => response.json())
     // Plot on the canvas
     .then(data => {
-        result = data.result
-        ratio = 255 / getMax(result)
+        plot = data.plot;
+        prediction = data.prediction;
+        ratio = 255 / getMax(plot)
 
-        for (let i = 0; i < result.width; i++) {
-            for (let j = 0; j < result.width; j++){
-                let pixelValue = result[j][i] * ratio;
+        for (let i = 0; i < plot.length; i++) {
+            for (let j = 0; j < plot.length; j++){
+                let pixelValue = plot[j][i] * ratio;
                 context_result.fillStyle = `rgba(${pixelValue}, ${pixelValue}, ${pixelValue}, 1)`;
                 context_result.fillRect(i, j, 1, 1);
             }
         }
+        document.getElementById("prediction").textContent = "The number is: " + prediction;
+
     }) 
     // Log error message
     .catch((error) => {

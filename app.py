@@ -6,6 +6,8 @@ import webbrowser
 import sys
 sys.path.append('angular_spectrum/')
 import sim.propagate as prop
+import sim.d2nn_inference as dnn
+
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
@@ -33,15 +35,11 @@ def run_simulation():
 @app.route('/recognize', methods=['POST'])
 def recognize():
     data = request.get_json()
-    z = float(data.get('z'))
-    wl = float(data.get('wl'))/1000
-    grid = float(data.get('grid'))
-    matrix = torch.Tensor(np.array(data.get('matrix')))
+    X = torch.Tensor(np.array(data.get('matrix')))
     
-    X = prop.propagate(matrix, grid, wl, z)
-    X = X.abs()
+    X,y = dnn.d2nn_inference(X, cmos=True, only_return_X=False)
 
-    return jsonify(X.tolist())
+    return jsonify({"plot":X.tolist(), "prediction":y})
 
 if __name__ == '__main__':
     webbrowser.open("http://127.0.0.1:8080")

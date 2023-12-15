@@ -69,7 +69,6 @@ def before_cmos(model, X, wl, cmos=True):
     X = zero_padding(m.dmd(X), m.pad_ratio + 1)
     # assert torch.count_nonzero((X.real != 0) & (X.real != 1)) == 0, 'bad binarization'
 
-    print('before d2nn', X.abs().square().sum().item())
     if not cmos:
         return X
     X = propagate(X, m.grid_size, wl, m.zs[0])
@@ -79,7 +78,6 @@ def before_cmos(model, X, wl, cmos=True):
         X = propagate(X, m.grid_size, wl, z)
         continue
 
-    print('after d2nn', X.abs().square().sum().item())
     return X
 
 
@@ -129,11 +127,8 @@ def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
 
     if cmos:
         y = d2nn_base(X_test_cpu, wl)
-        print(f'y pred: {y}')
-        if y_label is not None:
-            print(f'y label: {y_label}')
 
-    ratio = float(1 / (d2nn_base.pad_ratio + 1) * d2nn_base.dmd.resize_factor)
+    ratio = float(1 / (d2nn_base.pad_ratio + 0.429) * d2nn_base.dmd.resize_factor)
     X = show_X(X, ratio)
 
     # fig, ax = plt.subplots(1, 1)
@@ -164,11 +159,11 @@ def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
         return X
     return X, y.argmax().item()
 
-
 if __name__ == '__main__':
     # ugly "1"
     X = np.zeros((28, 28))
     X[:, 12:15] = 1
 
     X, y = d2nn_inference(X, cmos=True, only_return_X=False)
+    print(X.shape)
 
