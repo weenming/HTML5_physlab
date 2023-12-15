@@ -37,17 +37,18 @@
     
     <div id="drawContainer" class="container">
     <div style="float: left; width: 50%;" class="box"><canvas id="number" width="280" height="280" style="float: right"></canvas></div>
-    &ThinSpace;
+    &ThickSpace;
     <div style="float: left; width: 50%;" class="box"><canvas id="result" width="280" height="280" style="float: left"></canvas></div>
     </div>
     <p>
         <span id="prediction">The number is: </span>
+        <div style="float: center; width: 100%;" class="box"><canvas id="logits" width="600" height="60" style="float: center"></canvas></div>
+        <span>&ThinSpace;0&emsp;&emsp;&emsp;&ThinSpace;1&emsp;&emsp;&emsp;&ThinSpace;2&emsp;&emsp;&emsp;&ThinSpace;3&emsp;&emsp;&emsp;&ThinSpace;4&emsp;&emsp;&emsp;&ThinSpace;5&emsp;&emsp;&emsp;&ThinSpace;6&emsp;&emsp;&emsp;&ThinSpace;7&emsp;&emsp;&emsp;&ThinSpace;8&emsp;&emsp;&emsp;&ThinSpace;9</span>
     </p>
     <p>
         <button onclick="clearCanvas()">Clear Canvas</button>
         <button id="Eraser" onclick="toggleEraser()">Eraser: off</button>
     </p>
-
 
     <script src="{{ url_for('static', filename='MNIST.js') }}"></script>
 

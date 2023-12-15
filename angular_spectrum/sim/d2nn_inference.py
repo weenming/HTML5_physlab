@@ -131,39 +131,15 @@ def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
     ratio = float(1 / (d2nn_base.pad_ratio + 0.429) * d2nn_base.dmd.resize_factor)
     X = show_X(X, ratio)
 
-    # fig, ax = plt.subplots(1, 1)
-    # idx = d2nn_base.cmos.get_frame_idx(X)
-
-
-    # s = ax.imshow(
-    #     show_X(
-    #         X, 
-    #         ratio
-    #     ), 
-    #     extent=[
-    #         grid_size * X.shape[0] * (1 - ratio) / 2,
-    #         grid_size * X.shape[0] * (1 + ratio) / 2, 
-    #         grid_size * X.shape[1] * (1 + ratio) / 2, 
-    #         grid_size * X.shape[1] * (1 - ratio) / 2, 
-    #     ],
-    #     interpolation=None
-    # )
-    # if cmos:
-    #     draw_frame(ax, idx, d2nn_base, grid_size)
-
-    # ax.set_xlabel(f'$\mu$m')
-    # ax.set_ylabel(f'$\mu$m')
-    # fig.colorbar(s)
-
     if only_return_X:
         return X
-    return X, y.argmax().item()
+    return X, y.argmax().item(), y
 
 if __name__ == '__main__':
     # ugly "1"
     X = np.zeros((28, 28))
     X[:, 12:15] = 1
 
-    X, y = d2nn_inference(X, cmos=True, only_return_X=False)
-    print(X.shape)
+    X, y, logits = d2nn_inference(X, cmos=True, only_return_X=False)
+    print(logits)
 

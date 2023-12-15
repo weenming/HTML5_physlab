@@ -37,9 +37,9 @@ def recognize():
     data = request.get_json()
     X = torch.Tensor(np.array(data.get('matrix')))
     
-    X,y = dnn.d2nn_inference(X, cmos=True, only_return_X=False)
+    X,y,logits = dnn.d2nn_inference(X, cmos=True, only_return_X=False)
 
-    return jsonify({"plot":X.tolist(), "prediction":y})
+    return jsonify({"plot":X.tolist(), "prediction":y, "pred":logits.tolist()})
 
 if __name__ == '__main__':
     webbrowser.open("http://127.0.0.1:8080")

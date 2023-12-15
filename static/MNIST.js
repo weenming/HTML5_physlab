@@ -2,6 +2,8 @@ let number = document.getElementById('number');
 let context_number = number.getContext('2d', { willReadFrequently: true });
 let result = document.getElementById('result');
 let context_result = result.getContext('2d', { willReadFrequently: true });
+let logits = document.getElementById('logits');
+let context_logits = logits.getContext('2d', { willReadFrequently: true });
 
 let isDrawing = false;
 let isErasing = false;
@@ -19,6 +21,8 @@ function clearCanvas() {
     context_number.fillRect(0, 0, number.width, number.height);
     context_result.fillStyle = 'black';
     context_result.fillRect(0, 0, result.width, result.height);
+    context_logits.fillStyle = 'black';
+    context_logits.fillRect(0, 0, logits.width, logits.height);
 }
 
 // Drawing functions, including start and stop drawing
@@ -118,6 +122,14 @@ function Recognize() {
         }
         document.getElementById("prediction").textContent = "The number is: " + prediction;
 
+        pred = data.pred;
+        r = 255/ getMax(pred);
+        console.log(pred);
+        for (let i=0; i<10; i++){
+            y_i = pred[i]*r;
+            context_logits.fillStyle = `rgba(${y_i}, ${y_i}, ${y_i}, 1)`;
+            context_logits.fillRect(5+60*i, 5, 50, 50);
+        }
     }) 
     // Log error message
     .catch((error) => {
