@@ -5,10 +5,10 @@ let context_r = canvas_r.getContext('2d', { willReadFrequently: true });
 let canvas_p = document.getElementById('plotCanvas');
 let context_p = canvas_p.getContext('2d', { willReadFrequently: true });
 
-
 let isDrawing = false;
 let isErasing = false;
 let isMeasuring = true;
+let showGrid = false;
 
 let lineEnds = [];
 let points = [];
@@ -91,10 +91,35 @@ function clearCanvas() {
     context_p.fillRect(0, 0, canvas_p.width, canvas_p.height);
 }
 
+function Grid(){
+    if (showGrid){
+        let d = canvas.width/2
+        context.fillStyle = 'white';
+        context_r.fillStyle = 'white';
+        for (let i = 0; i<d; i+=50){
+            //context.fillRect(0,d+i,canvas.width,0.5);
+            context_r.fillRect(0,d+i,canvas.width,0.5);
+            //context.fillRect(0,d-i,canvas.width,0.5);
+            context_r.fillRect(0,d-i,canvas.width,0.5);
+            //context.fillRect(d+i,0,0.5,canvas.width);
+            context_r.fillRect(d+i,0,0.5,canvas.width);
+            //context.fillRect(d-i,0,0.5,canvas.width);
+            context_r.fillRect(d-i,0,0.5,canvas.width);
+        }
+    }
+}
+
 function toggleEraser() {
     isErasing = !isErasing;
     if (isErasing){document.querySelector('#Eraser').textContent = 'Eraser: on';}
     else{document.querySelector('#Eraser').textContent = 'Eraser: off';}
+}
+
+function toggleGrid() {
+    showGrid = !showGrid;
+    runSimulation();
+    if (showGrid){document.querySelector('#showGrid').textContent = 'Show Grid: on';}
+    else{document.querySelector('#showGrid').textContent = 'Show Grid: off';}
 }
 
 function changeBrushSize(){
@@ -304,6 +329,7 @@ function runSimulation() {
     .then(data => {
         result = data.result
         ratio = 255 / getMax(result)
+        
 
         for (let i = 0; i < canvas_r.width; i++) {
             for (let j = 0; j < canvas_r.width; j++){
@@ -323,6 +349,8 @@ function runSimulation() {
         let newSideLength = document.getElementById('canvasSlider').value;
         ratio = newSideLength/getMax(result)
         createPlot(lineEnds, points, result, ratio);
+
+        Grid();
 
     }) 
     // Log error message

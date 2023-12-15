@@ -55,7 +55,7 @@
         <label for="z">Distance(&mu;m)  :</label>
         <input type="text" id="z" name="z" value="20000" onchange="runSimulation()" required>
 
-        <label for="grid">Grid(&mu;m) :</label>
+        <label for="grid">Sample Distance(&mu;m) :</label>
         <input type="text" id="grid" name="grid" value="1" onchange="runSimulation()" required>
 
         <label for="wl">Wave Length(nm) :</label>
@@ -89,8 +89,8 @@
         <button onclick="clearCanvas()">Clear Canvas</button>
         <button id="Eraser" onclick="toggleEraser()">Eraser: off</button>
         <button id="Measurement" onclick="toggleMeasurement()">Measurement: on</button>
+        <button id="showGrid" onclick="toggleGrid()">Show Grid: off</button>
         <button id="saveResultButton">Save Measurement as CSV</button>
-
     </p>
     <p>
         <span id="brushValue">Brush Width: 2</span>

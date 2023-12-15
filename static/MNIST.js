@@ -9,14 +9,6 @@ let matrix = [];
 
 clearCanvas();
 
-//preset();
-
-// Preset
-// function preset(){
-//     Recognize();
-// }
-
-// Event listeners for drawing input
 number.addEventListener('mousedown', startDrawing);
 number.addEventListener('mousemove', draw);
 number.addEventListener('mouseup', stopDrawing);
