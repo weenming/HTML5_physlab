@@ -45,7 +45,7 @@ def get_d2nn(show_slm=False):
         pad_ratio=1, 
     ) # cpu
 
-    d2nn_base.load_state_dict(torch.load(f'./../../saved_model/d2nn_base_{exp_idx}', map_location=torch.device('cpu')))
+    d2nn_base.load_state_dict(torch.load(os.path.dirname(__file__) + f'/../saved_model/d2nn_base_{exp_idx}', map_location=torch.device('cpu')))
     d2nn_base.eval()
 
     if show_slm:
@@ -82,7 +82,7 @@ def before_cmos(model, X, wl, cmos=True):
     return X
 
 
-def draw_frame(ax, sq_idx, model, grid_size):
+def draw_frame(ax, sq_idx=get_d2nn().cmos.get_frame_idx(torch.zeros((1000, 1000))), model=get_d2nn(), grid_size=grid_size):
     classes = model.cmos.classes
     sq_idx = (
         sq_idx[1].reshape(classes, -1), sq_idx[0].reshape(classes, -1)
@@ -104,7 +104,7 @@ def show_X(X, ratio=1):
     ]
 
 
-def d2nn_inference(X_test, cmos=True, y_label=None):
+def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
     '''
     Returns the intensity on the CMOS plane.
 
@@ -126,31 +126,33 @@ def d2nn_inference(X_test, cmos=True, y_label=None):
         if y_label is not None:
             print(f'y label: {y_label}')
 
-    fig, ax = plt.subplots(1, 1)
-    idx = d2nn_base.cmos.get_frame_idx(X)
+    # fig, ax = plt.subplots(1, 1)
+    # idx = d2nn_base.cmos.get_frame_idx(X)
 
-    ratio = float(1 / (d2nn_base.pad_ratio + 1) * d2nn_base.dmd.resize_factor)
+    # ratio = float(1 / (d2nn_base.pad_ratio + 1) * d2nn_base.dmd.resize_factor)
 
-    s = ax.imshow(
-        show_X(
-            X, 
-            ratio
-        ), 
-        extent=[
-            grid_size * X.shape[0] * (1 - ratio) / 2,
-            grid_size * X.shape[0] * (1 + ratio) / 2, 
-            grid_size * X.shape[1] * (1 + ratio) / 2, 
-            grid_size * X.shape[1] * (1 - ratio) / 2, 
-        ],
-        interpolation=None
-    )
-    if cmos:
-        draw_frame(ax, idx, d2nn_base, grid_size)
+    # s = ax.imshow(
+    #     show_X(
+    #         X, 
+    #         ratio
+    #     ), 
+    #     extent=[
+    #         grid_size * X.shape[0] * (1 - ratio) / 2,
+    #         grid_size * X.shape[0] * (1 + ratio) / 2, 
+    #         grid_size * X.shape[1] * (1 + ratio) / 2, 
+    #         grid_size * X.shape[1] * (1 - ratio) / 2, 
+    #     ],
+    #     interpolation=None
+    # )
+    # if cmos:
+    #     draw_frame(ax, idx, d2nn_base, grid_size)
 
-    ax.set_xlabel(f'$\mu$m')
-    ax.set_ylabel(f'$\mu$m')
-    fig.colorbar(s)
+    # ax.set_xlabel(f'$\mu$m')
+    # ax.set_ylabel(f'$\mu$m')
+    # fig.colorbar(s)
 
+    if only_return_X:
+        return X
     return X, y.argmax().item()
 
 
