@@ -115,7 +115,9 @@ def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
         y_label: Groundtruth label. Printed
 
     Returns:
-        X: 1000 * 1000 matrix. The EM wave amplitude (complex number) on the CMOS plane.
+        X:
+             200 * 200 matrix. The EM wave amplitude (complex number) on 
+             the CMOS plane. Only the central region is shown.
         y_pred: predicted label
     '''
     d2nn_base = get_d2nn(show_slm=False)
@@ -131,10 +133,12 @@ def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
         if y_label is not None:
             print(f'y label: {y_label}')
 
+    ratio = float(1 / (d2nn_base.pad_ratio + 1) * d2nn_base.dmd.resize_factor)
+    X = show_X(X, ratio)
+
     # fig, ax = plt.subplots(1, 1)
     # idx = d2nn_base.cmos.get_frame_idx(X)
 
-    # ratio = float(1 / (d2nn_base.pad_ratio + 1) * d2nn_base.dmd.resize_factor)
 
     # s = ax.imshow(
     #     show_X(
