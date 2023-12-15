@@ -1,6 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.dirname(__file__) + '/../../')
+sys.path.append(os.path.dirname(__file__) + '/../')
 
 from d2nn.d2nn import D2NN, DMD, SLM, CMOS
 from sim.propagate_d2nn import propagate
@@ -112,6 +113,10 @@ def d2nn_inference(X_test, cmos=True, y_label=None, only_return_X=True):
         X_test: a 28 * 28 handwritten digit as array
         cmos: if False, returns the image of the input
         y_label: Groundtruth label. Printed
+
+    Returns:
+        X: 1000 * 1000 matrix. The EM wave amplitude (complex number) on the CMOS plane.
+        y_pred: predicted label
     '''
     d2nn_base = get_d2nn(show_slm=False)
     d2nn_base.cpu()
@@ -161,5 +166,5 @@ if __name__ == '__main__':
     X = np.zeros((28, 28))
     X[:, 12:15] = 1
 
-    X, y = d2nn_inference(X, True)
+    X, y = d2nn_inference(X, cmos=True, only_return_X=False)
 
