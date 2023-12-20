@@ -36,7 +36,7 @@ function startDrawing(e) {
     
     if (isErasing){context_number.strokeStyle = 'black';}
     else{context_number.strokeStyle = 'white';}
-    context_number.lineWidth = 10;
+    context_number.lineWidth = 20;
     context_number.lineCap = 'round';
 
     context_number.beginPath();
@@ -86,8 +86,13 @@ function convertCanvasToMatrix(context) {
                 let brightness = 0.299 * imageData.data[k] + 0.587 * imageData.data[k + 1] + 0.114 * imageData.data[k + 2];
                 totalBrightness += brightness;
             }
+            let threshold = 0.5;
+            if (totalBrightness / (blockSize * blockSize * 255)>threshold){
+                b = 1;
+            }
+            else{b = 0;}
             // Average brightness for the block, normalized to 0-1 range
-            row.push(totalBrightness / (blockSize * blockSize * 255));
+            row.push(b);
         }
         matrix.push(row);
     }
